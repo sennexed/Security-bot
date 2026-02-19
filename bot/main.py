@@ -53,15 +53,11 @@ class InviteSecurityBot(commands.AutoShardedBot):
         self._synced = False
 
     async def setup_hook(self) -> None:
-        await self.add_cog(InvitesCog(self, self.invite_tracker))
+    await self.add_cog(InvitesCog(self, self.invite_tracker))
+    await self.add_cog(SecurityCog(self, self.security))
+    await self.add_cog(PremiumCog(self, self.premium))
 
-        security_cog = SecurityCog(self, self.security)
-        await self.add_cog(security_cog)
-        self.tree.add_command(security_cog.security_group)
-
-        premium_cog = PremiumCog(self, self.premium)
-        await self.add_cog(premium_cog)
-        self.tree.add_command(premium_cog.premium_group)
+    await self.tree.sync()
 
     async def on_ready(self) -> None:
         if not self._synced:
